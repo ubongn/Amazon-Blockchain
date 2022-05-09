@@ -15,8 +15,8 @@ export const AmazonProvider = ({ children }) => {
   const [etherscanLink, setEtherscanLink] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [balance, setBalance] = useState("");
-  //   const [recentTransactions, setRecentTransactions] = useState([]);
-  //   const [ownedItems, setOwnedItems] = useState([]);
+    const [recentTransactions, setRecentTransactions] = useState([]);
+    const [ownedItems, setOwnedItems] = useState([]);
 
   const {
     authenticate,
@@ -33,11 +33,11 @@ export const AmazonProvider = ({ children }) => {
     isLoading: assetsDataisLoading,
   } = useMoralisQuery("assets");
 
-  //   const {
-  //     data: userData,
-  //     error: userDataError,
-  //     isLoading: userDataisLoading,
-  //   } = useMoralisQuery('_User')
+    const {
+      data: userData,
+      error: userDataError,
+      isLoading: userDataisLoading,
+    } = useMoralisQuery('_User')
 
   const getBalance = async () => {
     try {
@@ -65,12 +65,12 @@ export const AmazonProvider = ({ children }) => {
     (async () => {
       if (isAuthenticated) {
         await getBalance();
-
+        await listenToUpdates();
         const currentUsername = await user?.get("nickname");
         setUsername(currentUsername);
         const account = await user?.get("ethAddress");
         setCurrentAccount(account);
-        //     await listenToUpdates();
+        
       }
     })();
   }, [isAuthenticated, user, username, currentAccount]);
@@ -79,7 +79,7 @@ export const AmazonProvider = ({ children }) => {
     (async () => {
       if (isWeb3Enabled) {
         await getAssets();
-        //await getOwnedAssets()
+        await getOwnedAssets()
       }
     })();
   }, [isWeb3Enabled, assetsData, assetsDataisLoading]);
@@ -98,42 +98,43 @@ export const AmazonProvider = ({ children }) => {
     }
   };
 
-  //   const buyAsset = async (price, asset) => {
-  //     try {
-  //       if (!isAuthenticated) return
+    const buyAsset = async (price, asset) => {
+      try {
+        if (!isAuthenticated) return
 
-  //       const options = {
-  //         type: 'erc20',
-  //         amount: price,
-  //         receiver: amazonCoinAddress,
-  //         contractAddress: amazonCoinAddress,
-  //       }
+        const options = {
+          type: 'erc20',
+          amount: price,
+          receiver: amazonCoinAddress,
+          contractAddress: amazonCoinAddress,
+        }
 
-  //       let transaction = await Moralis.transfer(options)
-  //       const receipt = await transaction.wait()
-  //       console.log('RUNNING', receipt)
-  //       if (receipt) {
-  //         console.log('WAITING FOR RECEIPT')
-  //         const res = userData[0].add('ownedAssets', {
-  //           ...asset,
-  //           purchaseDate: Date.now(),
-  //           etherscanLink: `https://rinkeby.etherscan.io/tx/${receipt.transactionHash}`,
-  //         })
-  //         await res.save().then(() => {
-  //           alert("You've successfully purchased this asset!")
-  //         })
-  //       }
-  //     } catch (error) {
-  //       console.log(error)
-  //     }
-  //   }
+        let transaction = await Moralis.transfer(options)
+        const receipt = await transaction.wait()
+        console.log('RUNNING', receipt)
+         
+        if (receipt) {
+          console.log('WAITING FOR RECEIPT')
+          const res = userData[0].add('ownedAssets', {
+            ...asset,
+            purchaseDate: Date.now(),
+            etherscanLink: `https://rinkeby.etherscan.io/tx/${receipt.transactionHash}`,
+          })
+          await res.save().then(() => {
+            alert("You've successfully purchased this asset!")
+          })
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
 
   const buyTokens = async () => {
     if (!isAuthenticated) {
       await authenticate();
     }
 
-    //   await enableWeb3()
+      await enableWeb3()
     const amount = ethers.BigNumber.from(tokenAmount);
     const price = ethers.BigNumber.from("100000000000000");
     const calcPrice = amount.mul(price);
@@ -177,19 +178,19 @@ export const AmazonProvider = ({ children }) => {
     }
   };
 
-  //   const getOwnedAssets = async () => {
-  //     try {
+    const getOwnedAssets = async () => {
+      try {
 
-  //       if(userData[0].attributes.ownedAssets) {
-  //         setOwnedItems(prevItems => [
-  //           ...prevItems,
-  //           userData[0].attributes.ownedAssets,
-  //         ])
-  //       }
-  //     } catch (error) {
-  //       console.log(error)
-  //     }
-  //   }
+        if(userData[0].attributes.ownedAssets) {
+          setOwnedItems(prevItems => [
+            ...prevItems,
+            userData[0].attributes.ownedAssets,
+          ])
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
 
   return (
     <AmazonContext.Provider
@@ -210,10 +211,10 @@ export const AmazonProvider = ({ children }) => {
         setEtherscanLink,
         etherscanLink,
         currentAccount,
-        // buyTokens,
-        // buyAsset,
-        // recentTransactions,
-        // ownedItems,
+        buyTokens,
+        buyAsset,
+        recentTransactions,
+        ownedItems,
       }}
     >
       {children}
