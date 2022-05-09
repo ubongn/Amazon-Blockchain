@@ -1,8 +1,8 @@
 import React, { useContext, useEffect } from 'react'
-import Sidebar from '../components/Sidebar'
+import Siderbar from '../components/Siderbar'
 import Header from '../components/Header'
 import { AmazonContext } from '../context/AmazonContext'
-//import Transaction from '../components/Transaction'
+import Transaction from '../components/Transaction'
 
 const History = () => {
   const styles = {
@@ -17,7 +17,7 @@ const History = () => {
 
   return (
     <div className={styles.container}>
-        <Sidebar />
+        <Siderbar /> 
         <div className={styles.main}>
             <Header />
             <div className={styles.tableContainer}>
@@ -28,7 +28,7 @@ const History = () => {
                 )}
                 <div className={styles.transactions}>
                     {ownedItems && ownedItems.map((item, index)=> {
-                        // return <Transaction key={index} item = {item} />
+                        return <Transaction key={index} item = {item} />
                     })}
                 </div>
             </div>
