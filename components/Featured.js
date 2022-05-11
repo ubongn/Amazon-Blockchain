@@ -25,7 +25,7 @@ const Featured = () => {
             <div className={styles.card2}>
                 <div className={styles.cardCross}>
                 <video autoPlay loop muted controls='' className='object-cover'>
-                    <source src='https://openseauserdata.com/files/894fd3d49c7c258d202a22bb710a3416.mp4#t=0.001' />
+                    <source src='/files/894fd3d49c7c258d202a22bb710a3416.mp4#t=0.001' />
                 </video>
                 </div>
             </div>

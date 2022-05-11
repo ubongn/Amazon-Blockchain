@@ -31,19 +31,17 @@ const BuyModal = ({ close }) => {
     buyTokens,
   } = useContext(AmazonContext)
 
-  
-  const calculatePrice = () => {
-    const price = parseFloat(tokenAmount * 0.0001)
-    price = price.toFixed(4)
-    setAmountDue(price)
-  }
-
   useEffect(() => {
     calculatePrice()
   }, [tokenAmount])
 
   console.log(etherscanLink)
 
+  const calculatePrice = () => {
+    const price = parseFloat(tokenAmount * 0.0001)
+    price = price.toFixed(4)
+    setAmountDue(price)
+  }
 
   return (
     <div className={styles.container}>
