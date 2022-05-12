@@ -4,9 +4,9 @@ import { AmazonContext } from '../context/AmazonContext'
 import { HashLoader } from 'react-spinners'
 import Link from 'next/link'
 
-const BuyModal = ({ close }) => {
+const BuyModal = ({ close, buyTokens }) => {
   const styles = {
-    container: `h-full w-full flex flex-col`,
+    container: `h-full w-full flex flex-col `,
     closeX: `w-full h-[50px] flex items-center justify-end mb-[20px]`,
     title: `text-3xl font-bold flex flex-1 items-center mt-[20px] justify-center mb-[40px]`,
     content: `flex w-full mb-[30px] text-xl justify-center`,
@@ -15,10 +15,10 @@ const BuyModal = ({ close }) => {
     price: `w-full h-full flex justify-center items-center mt-[20px] font-bold text-3xl`,
     buyBtn: `w-[20%] h-[50px] bg-[#000] mt-[40px] rounded-lg p-[10px] flex mx-auto text-white justify-center items-center cursor-pointer`,
     loaderContainer: `w-full h-[500px] flex items-center justify-center`,
-    etherscan: `w-full h-full flex items-center justify-center text-green-500 text-2xl mt-[20px] font-bold curor-pointer`,
+    loader: `w-full h-full flex items-center justify-center`,
+    etherscan: `w-full h-full flex items-center justify-center text-green-500 text-2xl mt-[20px] font-bold cursor-pointer`,
     success: `w-full h-full flex items-center justify-center text-xl mt-[20px] font-bolder`,
   }
-
   const {
     amountDue,
     setAmountDue,
@@ -28,14 +28,10 @@ const BuyModal = ({ close }) => {
     setIsLoading,
     etherscanLink,
     setEtherscanLink,
-    buyTokens,
   } = useContext(AmazonContext)
-
   useEffect(() => {
     calculatePrice()
   }, [tokenAmount])
-
-  console.log(etherscanLink)
 
   const calculatePrice = () => {
     const price = parseFloat(tokenAmount * 0.0001)
@@ -67,7 +63,7 @@ const BuyModal = ({ close }) => {
           </div>
           <div className={styles.title}>Buy More Amazon Coins Here!</div>
           <div className={styles.content}>
-            Select how many tokens would you like to buy.
+            Select how many tokens you would like to buy.
           </div>
           <div className={styles.input}>
             <input
@@ -79,7 +75,7 @@ const BuyModal = ({ close }) => {
             />
           </div>
           <div className={styles.price}>
-            Total Due: {''}
+            Total Due:{' '}
             {tokenAmount && tokenAmount > 0 ? amountDue + 'ETH' : '0 ETH'}
           </div>
           <button
